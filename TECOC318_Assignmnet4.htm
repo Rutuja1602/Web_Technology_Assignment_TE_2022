@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Assignment 4</title>
+	<script type = "text/JavaScript">
+		
+		function tk(val)
+		{
+			document.getElementById("inp1").value+=val;
+		}
+		
+		function ev()
+		{
+			document.getElementById("t3").innerHTML=" "+eval(document.getElementById("inp1").value);
+		}
+		
+		function add()
+		{
+			a=parseInt(document.getElementById("i1").value);
+			b=parseInt(document.getElementById("i2").value);
+			if(isNaN(a)|| isNaN(b))
+			{
+				alert("Invalid Input");
+			}
+			else
+			{
+			document.getElementById("t1").innerHTML=" "+String(a+b);
+			}
+		}
+		
+		function sub()
+		{
+			a=parseInt(document.getElementById("i3").value);
+			b=parseInt(document.getElementById("i4").value);
+			if(isNaN(a)|| isNaN(b))
+			{
+				alert("Invalid Input");
+			}
+			else
+			{
+			document.getElementById("t2").innerHTML=" "+String(a-b);
+			}
+		}
+	</script>
+</head>
+<body>
+<div>
+<h1>Calculator</h1>
+<input type="text" id="inp1"></input><br>
+<button onclick="tk('1')">1</button><button onclick="tk('2')">2</button><button onclick="tk('3')">3</button><button onclick="tk('+')">+</button><br>
+<button onclick="tk('4')">4</button><button onclick="tk('5')">5</button><button onclick="tk('6')">6</button><button onclick="tk('-')">-</button><br>
+<button onclick="tk('7')">7</button><button onclick="tk('8')">8</button><button onclick="tk('9')">9</button><button onclick="ev()">=</button><br>
+<button onclick="tk('*')">*</button><button onclick="tk('0')">0</button><button onclick="tk('/')">/</button><br><br>
+<text id="t3"></text><br><br>
+</div>
+<h1>Addition</h1>
+First Number: <input id="i1" placeholder="First Number"></input><br>
+Second Number: <input id="i2" placeholder="Second Number"></input><br>
+<button onclick="add()">Evaluate</button><text id="t1"></text><br><br>
+
+<h1>Substraction</h1>
+First Number: <input id="i3" placeholder="First Number"></input><br>
+Second Number: <input id="i4" placeholder="Second Number"></input><br>
+<button onclick="sub()">Evaluate</button><text id="t2"></text><br><br>
+
+</body>
+</html>
