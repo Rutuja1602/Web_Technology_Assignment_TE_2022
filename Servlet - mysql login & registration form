@@ -1,0 +1,497 @@
+index.html
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Home Page</title>
+<style>
+.content
+{
+text-align:center;
+}
+ul, li
+{
+display:inline-block;
+padding:20px;
+font-size:30px;
+}
+</style>
+</head>
+<body>
+<div class="content">
+<h1>Select Options</h1>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="register.html">Register User</a></li>
+<li><a href="update.html">Update User</a></li>
+<li><a href="delete.html">Delete User</a></li>
+<li><a href="login.html">Login</a></li>
+</ul>
+</div>
+</body>
+</html>
+
+register.html
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Registration</title>
+<style>
+.content
+{
+text-align:center;
+padding:10px;
+}
+ul, li
+{
+display:inline-block;
+padding:20px;
+font-size:30px;
+}
+</style>
+</head>
+<body>
+<div class="content">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="register.html">Register User</a></li>
+<li><a href="update.html">Update User</a></li>
+<li><a href="delete.html">Delete User</a></li>
+<li><a href="login.html">Login</a></li>
+</ul>
+<h1>Register User</h1>
+<form action="http://localhost:8081/Login_and_Registration/register">
+<input type="text" name="roll" placeholder="Enter your roll no" required><br/><br/>
+<input type="password" name="password" placeholder="Enter your password" required><br/><br/>
+<input type="text" name="myname" placeholder="Enter your name" required><br/><br/>
+<input type="text" name="mobile" placeholder="Enter your mobile no" required><br/><br/>
+<textarea name="add" placeholder="Enter your address" required></textarea><br/><br/>
+Select class: <select name="class" required>
+<option>FE</option>
+<option>SE</option>
+<option>TE</option>
+<option>BE</option>
+</select><br/><br/>
+<input type="submit" value="Register">
+</form><br/>
+Already have account? <a href="login.html">Login Here</a>
+</div>
+</body>
+</html>
+
+register.java
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.sql.*;
+/**
+ * Servlet implementation class register
+ */
+@WebServlet("/register")
+public class register extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    /**
+     * Default constructor. 
+     */
+    public register() {
+        // TODO Auto-generated constructor stub
+    }
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		PrintWriter out=response.getWriter();
+		out.println("<html><body>");
+		int roll=Integer.parseInt(request.getParameter("roll"));
+		String pass=request.getParameter("password");
+		String name=request.getParameter("myname");
+		String mobile=request.getParameter("mobile");
+		String address=request.getParameter("add");
+		String classnm=request.getParameter("class");
+		try
+		{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/wt","root","root");
+			Statement st=con.createStatement();
+			st.executeUpdate("insert into defstudent values ('"+roll+"', '"+pass+"', '"+name+"','"+mobile+"','"+address+"','"+classnm+"');");
+			out.println("Registration Success<br/><br/>");
+			out.println("<a href=\"index.html\">Home</a>");
+		}
+		catch(Exception e)
+		{
+			out.println(e);
+		}
+		out.println("</body></html");
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}
+
+update.html
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Update</title>
+<style>
+.content
+{
+text-align:center;
+padding:10px;
+}
+ul, li
+{
+display:inline-block;
+padding:20px;
+font-size:30px;
+}
+</style>
+</head>
+<body>
+<div class="content">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="register.html">Register User</a></li>
+<li><a href="update.html">Update User</a></li>
+<li><a href="delete.html">Delete User</a></li>
+<li><a href="login.html">Login</a></li>
+</ul>
+<h1>Update User</h1>
+<form action="http://localhost:8081/Login_and_Registration/update">
+<input type="text" name="roll" placeholder="Enter your roll no"><br/><br/>
+<input type="password" name="password" placeholder="Enter your password"><br/><br/>
+<input type="text" name="myname" placeholder="Enter your name"><br/><br/>
+<input type="text" name="mobile" placeholder="Enter your mobile no"><br/><br/>
+<textarea name="add" placeholder="Enter your address"></textarea><br/><br/>
+Select class: <select name="class">
+<option>FE</option>
+<option>SE</option>
+<option>TE</option>
+<option>BE</option>
+</select><br/><br/>
+<input type="submit" value="Update">
+</form><br/>
+</div>
+</body>
+</html>
+
+update.java
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class update
+ */
+@WebServlet("/update")
+public class update extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public update() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		PrintWriter out=response.getWriter();
+		out.println("<html><body>");
+		int roll=Integer.parseInt(request.getParameter("roll"));
+		String pass=request.getParameter("password");
+		String name=request.getParameter("myname");
+		String mobile=request.getParameter("mobile");
+		String address=request.getParameter("add");
+		String classnm=request.getParameter("class");
+		try
+		{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/wt","root","root");
+			Statement st=con.createStatement();
+			ResultSet rs=st.executeQuery("select * from defstudent where roll='"+roll+"';");
+			if(rs.next())
+			{
+				st.executeUpdate("update defstudent set roll='"+roll+"', password='"+pass+"', name='"+name+"',mobile='"+mobile+"',address='"+address+"',class='"+classnm+"' where roll='"+roll+"';");
+				out.println("Updatation Success<br/><br/>");
+				out.println("<a href=\"index.html\">Home</a>");
+			}
+			else
+			{
+				out.println("User does not exist<br/><br/>");
+				out.println("<a href=\"index.html\">Home</a>");
+			}
+		}
+		catch(Exception e)
+		{
+			out.println(e);
+		}
+		out.println("</body></html");
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}
+
+delete.html
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Delete</title>
+<style>
+.content
+{
+text-align:center;
+padding:10px;
+}
+ul, li
+{
+display:inline-block;
+padding:20px;
+font-size:30px;
+}
+</style>
+</head>
+<body>
+<div class="content">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="register.html">Register User</a></li>
+<li><a href="update.html">Update User</a></li>
+<li><a href="delete.html">Delete User</a></li>
+<li><a href="login.html">Login</a></li>
+</ul>
+<h1>Delete User</h1>
+<form action="http://localhost:8081/Login_and_Registration/delete">
+<input type="text" name="roll" placeholder="Enter your roll no"><br/><br/>
+<input type="submit" value="Delete">
+</form><br/>
+</div>
+</body>
+</html>
+
+delete.java
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class delete
+ */
+@WebServlet("/delete")
+public class delete extends HttpServlet {
+	private static final long serialVersionUID = 1L;  
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public delete() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		PrintWriter out=response.getWriter();
+		out.println("<html><body>");
+		int roll=Integer.parseInt(request.getParameter("roll"));
+		try
+		{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/wt","root","root");
+			Statement st=con.createStatement();
+			ResultSet rs=st.executeQuery("select * from defstudent where roll='"+roll+"';");
+			if(rs.next())
+			{
+				st.executeUpdate("delete from defstudent where roll='"+roll+"';");
+				out.println("Deletion Success <br/>Deleted Roll No: "+roll+"<br/><br/>");
+				out.println("<a href=\"index.html\">Home</a>");
+			}
+			else
+			{
+				out.println("User does not exist<br/><br/>");
+				out.println("<a href=\"index.html\">Home</a>");
+			}
+		}
+		catch(Exception e)
+		{
+			out.println(e);
+		}
+		out.println("</body></html");
+	}
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+}
+
+login.html
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Login</title>
+<style>
+.content
+{
+text-align:center;
+padding:10px;
+}
+ul, li
+{
+display:inline-block;
+padding:20px;
+font-size:30px;
+}
+</style>
+</head>
+<body>
+<div class="content">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="register.html">Register User</a></li>
+<li><a href="update.html">Update User</a></li>
+<li><a href="delete.html">Delete User</a></li>
+<li><a href="login.html">Login</a></li>
+</ul>
+<h1>Login</h1>
+<form action="http://localhost:8081/Login_and_Registration/login">
+<input type="text" name="roll" placeholder="Enter your roll no"><br/><br/>
+<input type="password" name="password" placeholder="Enter your password"><br/><br/>
+<input type="submit" value="Login">
+</form><br/><br/>
+New User? <a href="register.html">Register Here</a>
+</div>
+</body>
+</html>
+
+login.java
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class login
+ */
+@WebServlet("/login")
+public class login extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public login() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		PrintWriter out=response.getWriter();
+		out.println("<html><body>");
+		int roll=Integer.parseInt(request.getParameter("roll"));
+		String pass=request.getParameter("password");
+		try
+		{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/wt","root","root");
+			Statement st=con.createStatement();
+			ResultSet rs=st.executeQuery("select * from defstudent where roll='"+roll+"';");
+			if(rs.next())
+			{
+				if(rs.getString(2).equals(pass))
+				{
+					out.println("Login Success<br/><br/>");
+					out.println("<a href=\"home.html\">Enter</a>");
+				}
+				else
+				{
+					out.println("Invalid Credentials<br/><br/>");
+					out.println("<a href=\"index.html\">Home</a>");
+				}
+			}
+			else
+			{
+				out.println("User does not exist");
+				out.println("<a href=\"index.html\">Home</a>");
+			}
+		}
+		catch(Exception e)
+		{
+			out.println(e);
+		}
+		out.println("</body></html");
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+}
+
